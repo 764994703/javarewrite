@@ -1,41 +1,29 @@
 package wordLadder.wzy;
 import java.util.*;
 import java.io.File;
+import org.springframework.stereotype.Controller;  
+import org.springframework.ui.Model;  
+import org.springframework.web.bind.annotation.ModelAttribute;  
+import org.springframework.web.bind.annotation.PathVariable;  
+import org.springframework.web.bind.annotation.RequestMapping;  
+import org.springframework.web.bind.annotation.RequestParam; 
+
 public class App {
-	public static void main() throws Exception{
-		Scanner s = new Scanner(System.in);//input file name and start&end word
-		System.out.println("dictionary address:\n");
-		String fl = s.nextLine();//filename
-		File file = new File(fl);
+	@RequestMapping(value = "/wordladder") 
+	public static void main(@RequestParam(value = "beginWord") String beginWord, @RequestParam(value = "endWord") String endWord, @RequestParam(value = "fileAddr") String fileName) throws Exception{
+		File file = new File(fileName);
 		Scanner dicscanner = new Scanner(file);//scanner of file
 		Set<String> dic = new HashSet<String>();//使用set作为dictionary
 		while(dicscanner.hasNextLine()){
 			dic.add(dicscanner.nextLine());//读取文件中单词放入dictionary
 		}
 		dicscanner.close();
-		System.out.println("start word:\n");
-		String start = s.nextLine();//start word
-		System.out.println("end word\n");
-		String end = s.nextLine();//end word
 		
 		App wl = new App();//实例wl以调用非静态函数
 		wl.ladder(start,end,dic);
 		s.close();
 	}
-	int maintest(String beginWord, String endWord, String filepath) throws Exception{
-		String fl = filepath;//filename
-		File file = new File(fl);
-		Scanner dicscanner = new Scanner(file);//scanner of file
-		Set<String> dic = new HashSet<String>();//使用set作为dictionary
-		while(dicscanner.hasNextLine()){
-			dic.add(dicscanner.nextLine());//读取文件中单词放入dictionary
-		}
-		dicscanner.close();
-		App wl = new App();//实例wl以调用非静态函数
-		if(wl.ladder(beginWord,endWord,dic)==0)
-			return 0;
-		else return 1;
-	}
+	
 	public int ladder(String beginWord, String endWord, Set<String> dic) throws Exception {  
         if (beginWord.length() == 0 || endWord.length() == 0  || beginWord.length() != endWord.length()){
         	System.out.println("there is something wrong!\n");
